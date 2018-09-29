@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-const int NUM_NAMES = 20;
+const int NUM_NAMES = 1024;
 
 //Function protoypes
 void selectionSort(string[], int);
@@ -12,16 +12,18 @@ void showArray(const string[], int);
 
 int main()
 {
-   string line;
+   string fileNameAndLocationForInput;
    cout << "Where is the file to input?" << endl;
-   cin >> line;
+   cin >> fileNameAndLocationForInput;
 
-   ifstream myfile(line);
+   string myArray[NUM_NAMES];
+
+   ifstream myfile(fileNameAndLocationForInput);
    if (myfile.is_open())
    {
-      while (!myfile.eof())
-      {
-         getline(myfile, line);
+      
+      for (int i = 0; i < NUM_NAMES; ++i) {
+         myfile >> myArray[i];
       }
    }
    else
@@ -29,29 +31,32 @@ int main()
       cout << "Was unable to open the file" << endl;
    }
 
+   string fileNameAndLcoationForOutput;
+   cout << "Where do you want to output file?" << endl;
+   cin >>
 
-   string names[NUM_NAMES] = { "Collins, Bill", "Smith, Bart", "Allet, Jim",
+  /* string names[NUM_NAMES] = { "Collins, Bill", "Smith, Bart", "Allet, Jim",
       "Griffin, Jim", "Stamey, Marty", "Rose, Geri",
       "Taylor, Terri", "Johnson, Jill", "johnson, jill", "58",
       "Aliison, Jeff", "Weaver, Jim", "Pore, Bob",
       "Rutherford, Greg", "Javens, Renee",
       "Harrison, Rose", "Setzer, Cathy",
       "Pike, Gordon", "Holland, Beth" };
-
+      */
    char again; //Hold y to repeat
 
    do
    {
       //Show array
       cout << "The unsorted values are\n";
-      showArray(names, NUM_NAMES);
+      showArray(myArray, NUM_NAMES);
 
       //Sort array
-      selectionSort(names, NUM_NAMES);
+      selectionSort(myArray, NUM_NAMES);
 
       //Display sorted array
       cout << "The sorted values are\n";
-      showArray(names, NUM_NAMES);
+      showArray(myArray, NUM_NAMES);
 
       //Run program again?
       cout << "Would you like to run the program again? (Y/N): ";
