@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+//PseudoCode
+
 const int NUM_NAMES = 1024;
 
 //Function protoypes
@@ -33,7 +35,8 @@ int main()
 
    string fileNameAndLcoationForOutput;
    cout << "Where do you want to output file?" << endl;
-   cin >>
+   cin >> fileNameAndLcoationForOutput;
+
 
   /* string names[NUM_NAMES] = { "Collins, Bill", "Smith, Bart", "Allet, Jim",
       "Griffin, Jim", "Stamey, Marty", "Rose, Geri",
@@ -44,6 +47,8 @@ int main()
       "Pike, Gordon", "Holland, Beth" };
       */
    char again; //Hold y to repeat
+
+   string wordSearch;
 
    do
    {
@@ -57,6 +62,18 @@ int main()
       //Display sorted array
       cout << "The sorted values are\n";
       showArray(myArray, NUM_NAMES);
+
+      cout << "What word would you like to search for?" << endl;
+         cin >> wordSearch;
+      
+      binarySearch(myArray, NUM_NAMES, wordSearch);
+      if (binarySearch(myArray, NUM_NAMES, wordSearch) == -1) {
+         cout << "The word is not found" << endl;
+      }
+      else {
+         cout << "The word has been found and it is located in " << binarySearch(myArray, NUM_NAMES, wordSearch);
+      }
+
 
       //Run program again?
       cout << "Would you like to run the program again? (Y/N): ";
