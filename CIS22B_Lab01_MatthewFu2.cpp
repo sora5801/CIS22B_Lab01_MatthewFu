@@ -10,75 +10,98 @@ const int NUM_NAMES = 1024;
 //Function protoypes
 void selectionSort(string[], int);
 int binarySearch(string[], int, string);
-void showArray(const string[], int);
+void showArray(const string[], int, ofstream &);
 
 int main()
 {
-   string fileNameAndLocationForInput;
+   string fileLocationForInput, fileNameForInput;
    cout << "Where is the file to input?" << endl;
-   cin >> fileNameAndLocationForInput;
+   cin >> fileLocationForInput;
+   cout << "What is the name of the file?" << endl;
+   cin >> fileNameForInput;
 
    string myArray[NUM_NAMES];
+   string fileNameAndLocationForInput = fileLocationForInput + "/" + fileNameForInput;
 
    ifstream myfile(fileNameAndLocationForInput);
+
    if (myfile.is_open())
    {
       
-      for (int i = 0; i < NUM_NAMES; ++i) {
+      for (int i = 0; i < NUM_NAMES;) {
+         ++i;
+         
          myfile >> myArray[i];
+        // cout << "i = " << i << "= " << myArray[i] << "s= " << myArray[i].size();
+
+         if (!myfile.eof() && myArray[i].size() == 1)
+            i--;
+         
+         if (myfile.eof() && myArray[i].size() == 1)
+         {
+            myArray[i] = "";
+
+            i = NUM_NAMES;
+         }
       }
    }
    else
    {
       cout << "Was unable to open the file" << endl;
+      return -1;
    }
 
-   string fileNameAndLcoationForOutput;
+   string fileNameAndLocationForOutput, fileLocationForOutput, fileNameForOutput;
    cout << "Where do you want to output file?" << endl;
-   cin >> fileNameAndLcoationForOutput;
+   cin >> fileLocationForOutput; 
+   cout << "What is the name of the output file?" << endl;
+   cin >> fileNameForOutput;
 
+   fileNameAndLocationForOutput = fileLocationForOutput + "/" + fileNameForOutput;
 
-  /* string names[NUM_NAMES] = { "Collins, Bill", "Smith, Bart", "Allet, Jim",
-      "Griffin, Jim", "Stamey, Marty", "Rose, Geri",
-      "Taylor, Terri", "Johnson, Jill", "johnson, jill", "58",
-      "Aliison, Jeff", "Weaver, Jim", "Pore, Bob",
-      "Rutherford, Greg", "Javens, Renee",
-      "Harrison, Rose", "Setzer, Cathy",
-      "Pike, Gordon", "Holland, Beth" };
-      */
+   ofstream thisfile;
+   thisfile.open(fileNameAndLocationForOutput);
+
    char again; //Hold y to repeat
 
    string wordSearch;
+   //Show array
+   cout << "The unsorted values are\n";
+   thisfile << "The unsorted values are\n";
+   showArray(myArray, NUM_NAMES, thisfile);
+
+   //Sort array
+   selectionSort(myArray, NUM_NAMES);
+
+   //Display sorted array
+   cout << "The sorted values are\n";
+   thisfile << "The sorted values are\n";
+   showArray(myArray, NUM_NAMES, thisfile);
 
    do
    {
-      //Show array
-      cout << "The unsorted values are\n";
-      showArray(myArray, NUM_NAMES);
-
-      //Sort array
-      selectionSort(myArray, NUM_NAMES);
-
-      //Display sorted array
-      cout << "The sorted values are\n";
-      showArray(myArray, NUM_NAMES);
-
       cout << "What word would you like to search for?" << endl;
+      thisfile << "\n" << "What word would you like to search for?" << endl;
          cin >> wordSearch;
+         thisfile << wordSearch;
       
       binarySearch(myArray, NUM_NAMES, wordSearch);
       if (binarySearch(myArray, NUM_NAMES, wordSearch) == -1) {
          cout << "The word is not found" << endl;
+         thisfile << "\n" << "The word is not found" << endl;
       }
       else {
-         cout << "The word has been found and it is located in " << binarySearch(myArray, NUM_NAMES, wordSearch);
+         cout << "The word has been found and it is located in index " << binarySearch(myArray, NUM_NAMES, wordSearch) << endl;
+         thisfile << "\n" << "The word has been found and it is located in index " << binarySearch(myArray, NUM_NAMES, wordSearch) << endl;
       }
 
-
       //Run program again?
-      cout << "Would you like to run the program again? (Y/N): ";
+      cout << "Would you like to run the program again? (Y/N): " << endl;
+      thisfile << "Would you like to run the program again? (Y/N): ";
       cin >> again;
+      thisfile << again;
    } while (again == 'y' || again == 'Y');
+   
    return 0;
 }
 
@@ -93,6 +116,7 @@ void selectionSort(string array[], int NUM_NAMES)
       minValue = array[startScan];
       for (int index = startScan + 1; index < NUM_NAMES; index++)
       {
+         
          if (array[index] < minValue)
          {
             minValue = array[index];
@@ -104,11 +128,16 @@ void selectionSort(string array[], int NUM_NAMES)
    }
 }
 
-void showArray(const string array[], int size)
- {
-    for (int count = 0; count < size; count++)
-        cout << array[count] << " ";
+void showArray(const string array[], int size, ofstream &thisfile)
+{
+   for (int count = 0; count < size; count++){
+      if (array[count] != "") {
+         cout << array[count] << " ";
+         thisfile << array[count] << " ";
+      }
+    }
     cout << endl;
+    thisfile << endl;
     }
 
 int binarySearch(string names[], int size, string value)
