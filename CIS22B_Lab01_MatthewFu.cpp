@@ -1,11 +1,31 @@
+/*CIS22B
+Lab 01: Search for a word from a text file.
+Name: Matthew Fu
+
+Program description. This program takes in an input file of the user's location and name, and 
+stores all of its content into a string array of size 1024, the maximum number of strings allowed. 
+It then sorts the array with selection sort, display the array, and then enters a do-while loop,
+asking for the user to search for a word. If the word is found, it will display the index of the
+word. The loop will run for as many times as the user wants. When the user is done, the program will
+close, and all of the user's interaction will be put in an output file of the user's location 
+and name.
+
+Pseudocode: 
+Prompt user for location and name of the input file.
+Receive user input for the location and name of the input file. 
+Opens the file. 
+If the file successfully opens, take all 2-or-more character words and 
+put them into a string array. If fails, exit the program
+Prompt user for location and name of the output file.
+
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
 using namespace std;
 
-//PseudoCode
-
-const int NUM_NAMES = 1024;
+const int NUM_NAMES = 1024; // Global variable for size of string array
 
 //Function protoypes
 void selectionSort(string[], int);
@@ -14,8 +34,9 @@ void showArray(const string[], int, ofstream &);
 
 int main()
 {
+   //First, the location is asked for 
    string fileLocationForInput, fileNameForInput;
-   cout << "Where is the file to input?" << endl;
+   cout << "What is the location of the file?" << endl;
    cin >> fileLocationForInput;
    cout << "What is the name of the file?" << endl;
    cin >> fileNameForInput;
@@ -28,11 +49,9 @@ int main()
    if (myfile.is_open())
    {
       
-      for (int i = 0; i < NUM_NAMES;) {
-         ++i;
+      for (int i = 0; i < NUM_NAMES; ++i) {
          
          myfile >> myArray[i];
-        // cout << "i = " << i << "= " << myArray[i] << "s= " << myArray[i].size();
 
          if (!myfile.eof() && myArray[i].size() == 1)
             i--;
@@ -45,14 +64,14 @@ int main()
          }
       }
    }
-   else
+   else //Program will close if unable to find the file
    {
       cout << "Was unable to open the file" << endl;
       return -1;
    }
 
    string fileNameAndLocationForOutput, fileLocationForOutput, fileNameForOutput;
-   cout << "Where do you want to output file?" << endl;
+   cout << "Where do you want to put the output file?" << endl;
    cin >> fileLocationForOutput; 
    cout << "What is the name of the output file?" << endl;
    cin >> fileNameForOutput;
@@ -64,7 +83,7 @@ int main()
 
    char again; //Hold y to repeat
 
-   string wordSearch;
+   string wordSearch; //string variable for 
    //Show array
    cout << "The unsorted values are\n";
    thisfile << "The unsorted values are\n";
